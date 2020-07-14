@@ -144,5 +144,16 @@ And that saved you an hour worth of repetitive and boring work which you can spe
 # Security
 If you discover any security related issues, please email mahmoud.italy@outlook.com instead of using the issue tracker.
 
+# Credits
+<ul>
+    <li>
+        <a href="https://github.com/Mahmoud-Italy">Mahmoud Italy</a>
+    </li>
+    <li>
+        <a href="https://github.com/Mahmoud-Italy/Larafast-fastApi/graphs/contributors">All Contributors</a>
+    </li>
+</ul>
+
+
 # License
 The MIT License (MIT). Please see License File for more information.
