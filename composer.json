@@ -1,0 +1,63 @@
+{
+    "name": "larafast/fastapi",
+    "description": "A Fast Laravel package to help you generate CRUD API Controllers and Resources, Model",
+    "keywords": [
+        "fastapi",
+        "larafast",
+        "scaffold",
+        "generate",
+        "generate api",
+        "api generator"
+    ],
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Mahmoud Italy",
+            "email": "mahmoud.italy@outlook.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "laravel/framework": "^6.0|^7.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^4.0|^5.0",
+        "phpunit/phpunit": "^8.0|^9.0"
+    },
+    "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
+        "psr-4": {
+            "Larafast\\Fastapi\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "files": [
+            "src/helpers.php"
+        ],
+        "psr-4": {
+            "Larafast\\Fastapi\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Larafast\\Fastapi\\FastapiServiceProvider"
+            ],
+            "aliases": {
+                "Fastapi": "Larafast\\Fastapi\\FastapiFacade"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
