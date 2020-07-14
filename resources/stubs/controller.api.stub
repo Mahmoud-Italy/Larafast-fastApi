@@ -18,7 +18,7 @@ class DummyClass extends Controller
      */
     public function index()
     {
-        $$rows$ = DummyModelClassResources::collection(DummyModelClass::fetchData(request()->all()));
+        $rows = DummyModelClassResources::collection(DummyModelClass::fetchData(request()->all()));
         return response()->json(['data' => $rows], 200);
     }
 
