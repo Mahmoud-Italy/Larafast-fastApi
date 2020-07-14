@@ -41,10 +41,10 @@ class DummyClass extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @param  \DummyModelClass  $DummyModelVariable
      * @return \Illuminate\Http\Response
      */
-    public function show(\DummyFullModelClass $DummyModelVariable)
+    public function show(DummyModelClass $DummyModelVariable)
     {
         $row = new DummyModelClassResources(DummyModelClass::find($DummyModelVariable));
         return response()->json(['row' => $row], 200);
