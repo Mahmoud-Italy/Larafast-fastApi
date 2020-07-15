@@ -143,9 +143,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Blog extends Model
 {
     // use SoftDeletes;
-
     protected $guarded = [];
-    //
 
     // imageable polymorphic
     public function image() {
@@ -155,7 +153,7 @@ class Blog extends Model
     // handle attributes
     public function getImageAttribute()
     {
-        $img = upload image ..
+        // $img = upload image ..
         return self::image()->save($img);
     }
 
@@ -185,7 +183,12 @@ class Blog extends Model
             $obj->orderBy('id', 'DESC');
           }
 
+
+
           // feel free to add any query filter as much as you want...
+
+
+
 
         $obj = $obj->paginate($value['paginate'] ?? 10);
         return $obj;
