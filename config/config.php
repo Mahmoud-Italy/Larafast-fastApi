@@ -1,4 +1,4 @@
 <?php
 return [
-    "stubs_dir" => resource_path('stubs'),
+  "stubs_dir" => base_path('vendor/larafast/fastapi/resources/stubs'),
 ];

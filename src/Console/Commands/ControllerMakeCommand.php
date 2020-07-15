@@ -37,9 +37,7 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        $stub = 'stubs/controller.api.stub';
-
-        return resource_path($stub);
+        return config('fastApi.stubs_dir') . '/controller.api.stub';
     }
 
     /**

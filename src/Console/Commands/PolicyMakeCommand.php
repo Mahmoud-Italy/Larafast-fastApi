@@ -117,8 +117,8 @@ class PolicyMakeCommand extends GeneratorCommand
     protected function getStub()
     {
         return $this->option('model')
-            ? resource_path('/stubs/policy.stub')
-            : resource_path('/stubs/policy.plain.stub');
+            ? config('fastApi.stubs_dir'). '/policy.stub'
+            : config('fastApi.stubs_dir'). '/policy.plain.stub';
     }
 
     /**

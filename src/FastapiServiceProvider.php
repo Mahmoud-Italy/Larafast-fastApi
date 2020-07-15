@@ -36,15 +36,15 @@ class FastapiServiceProvider extends ServiceProvider
         ], 'fastApi');
 
 
-        $this->publishes([
-            __DIR__ . '/../resources/stubs' => resource_path('stubs')
-        ], 'fastApi');
+        // $this->publishes([
+        //     __DIR__ . '/../resources/stubs' => resource_path('stubs')
+        // ], 'fastApi');
 
 
         $this->app->when(MigrationCreator::class)
             ->needs('$customStubPath')
             ->give(function ($app) {
-                return resource_path('stubs');
+                return base_path('vendor/larafast/fastapi/resources/stubs');
             });
 
         $this->commands($this->commands);
