@@ -148,16 +148,16 @@ class Blog extends Model
     //
 
     // imageable polymorphic
-    // public function image() {
-    //     return $this->morphOne(Image::class, 'imageable');
-    // }
+    public function image() {
+        return $this->morphOne(Image::class, 'imageable');
+    }
 
     // handle attributes
-    // public function getImageAttribute()
-    // {
-    //    $img = upload image ..
-    //    return self::image()->save($img);
-    // }
+    public function getImageAttribute()
+    {
+        $img = upload image ..
+        return self::image()->save($img);
+    }
 
     // fetch Data
     public static function fetchData($value='')
@@ -165,18 +165,18 @@ class Blog extends Model
         $obj = self::query();
 
           // langauges..
-          // if(isset($value['locale'])) {
-          //   app()->setLocale($value['locale']);
-          // }
+          if(isset($value['locale'])) {
+             app()->setLocale($value['locale']);
+          }
 
           // search..
-          // if(isset($value['search'])) {
-          //   $obj->where(function($q){
-          //       $q->where('title', 'like','%'.$value['search'].'%')
-          //       $q->orWhere('body', 'like', '%'.$value['search'].'%')
-          //       $q->orWhere('id', $value['search']);
-          //     });
-          // }
+          if(isset($value['search'])) {
+            $obj->where(function($q){
+                $q->where('title', 'like','%'.$value['search'].'%')
+                $q->orWhere('body', 'like', '%'.$value['search'].'%')
+                $q->orWhere('id', $value['search']);
+            });
+          }
 
           // order..
           if(isset($value['order'])) {
