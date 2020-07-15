@@ -133,6 +133,69 @@ class BlogController extends Controller
 
 </pre>
 
+# Snapshot of Blog Model
+<pre>
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Blog extends Model
+{
+    // use SoftDeletes;
+
+    protected $guarded = [];
+    //
+
+    // imageable polymorphic
+    // public function image() {
+    //     return $this->morphOne(Image::class, 'imageable');
+    // }
+
+    // handle attributes
+    // public function getImageAttribute()
+    // {
+    //    $img = upload image ..
+    //    return self::image()->save($img);
+    // }
+
+    // fetch Data
+    public static function fetchData($value='')
+    {
+        $obj = self::query();
+
+          // langauges..
+          // if(isset($value['locale'])) {
+          //   app()->setLocale($value['locale']);
+          // }
+
+          // search..
+          // if(isset($value['search'])) {
+          //   $obj->where(function($q){
+          //       $q->where('title', 'like','%'.$value['search'].'%')
+          //       $q->orWhere('body', 'like', '%'.$value['search'].'%')
+          //       $q->orWhere('id', $value['search']);
+          //     });
+          // }
+
+          // order..
+          if(isset($value['order'])) {
+            $obj->orderBy('id', $value['sort']);
+          } else {
+            $obj->orderBy('id', 'DESC');
+          }
+
+          // feel free to add any query filter as much as you want...
+
+        $obj = $obj->paginate($value['paginate'] ?? 10);
+        return $obj;
+    }
+}
+
+</pre>
+
+
+
 Now add the necessary fields and run
 
 <pre>php artisan migrate</pre>
