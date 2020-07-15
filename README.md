@@ -147,7 +147,7 @@ class Blog extends Model
 
     // imageable polymorphic
     public function image() {
-        return $this->morphOne(Image::class, 'imageable');
+        // return $this->morphOne(Image::class, 'imageable');
     }
 
     // handle attributes
