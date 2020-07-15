@@ -1,27 +1,36 @@
-#What does mean FastApi:
+# Larafast FastApi
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Mahmoud-Italy/Larafast-fastApi/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Mahmoud-Italy/Larafast-fastApi/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/Mahmoud-Italy/Larafast-fastApi/badges/build.png?b=master)](https://scrutinizer-ci.com/g/Mahmoud-Italy/Larafast-fastApi/build-status/master)
+[![Code Intelligence Status](https://scrutinizer-ci.com/g/Mahmoud-Italy/Larafast-fastApi/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
+
+# What does mean FastApi:
 A Fastapi Laravel package to help you generate CRUD API Controllers and Resources, Model.. etc
 
-#What actually do?
+# What actually do?
 Suppose you are building an api, and you want to create controller and resources and model and factory.. etc, then you have to do a ton of other tedious and to be honest, boring things like creating migrations, model factories, the controller, form validation and adding all the logic and what not.
 
 So what Fastapi does is when you tell it the model name, it will do all those boring things. When it's done you have the following:
+<ul>
+    <li>Blog.php</li>
+    <li>BlogController.php ship with code already exists</li>
+    <li>BlogStoreRequest.php and BlogUpdateRequest.php</li>
+    <li>BlogResoure.php</li>
+    <li>Timestamped create_blogs_table.php migration file</li>
+    <li>BlogFactory.php</li>
+</ul>
 
-Blog.php
-BlogController.php ship with code already exists.
-BlogStoreRequest.php and BlogUpdateRequest.php
-BlogResoure.php
-Timestamped create_blogs_table.php migration file
-BlogFactory.php
-Installation
-composer require larafast/fastapi --dev
-Then publish the stubs
-php artisan vendor:publish --tag=fastApi
-It will generate stubs to your resources/stubs directory.
+# Installation
+<pre>composer require larafast/fastapi --dev</pre>
 
-#Example
-php artisan fastApi Blog
+# Then publish the config
+<pre>php artisan vendor:publish --tag=fastApi</pre>
+
+
+# Example
+<pre>php artisan fastApi Blog</pre>
 Once done, it will show you the details of the files generated.
 
+<pre>
 Factory created successfully
 
 Created Migration: 2020_07_14_125128_create_blogs_table
@@ -35,8 +44,10 @@ Request created successfully
 Request created successfully
 
 Resource created successfully
+</pre>
 
-#Snapshot of BlogController
+# Snapshot of BlogController
+<pre>
 namespace App\Http\Controllers;
 
 use App\Blog;
@@ -120,16 +131,22 @@ class BlogController extends Controller
     }
 }
 
+</pre>
+
 Now add the necessary fields and run
 
-php artisan migrate
+<pre>php artisan migrate</pre>
 And that saved you an hour worth of repetitive and boring work which you can spend on more important development challenges.
 
-Security
+# Security
 If you discover any security related issues, please email mahmoud.italy@outlook.com instead of using the issue tracker.
 
-Credits
-Mahmoud Italy
-All Contributors
-License
+# Credits
+
+  <ul>
+    <li><a href="https://github.com/Mahmoud-Italy">Mahmoud Italy</a></li>
+    <li><a href="https://github.com/Mahmoud-Italy/Larafast-fastApi/graphs/contributors">All Contributors</a></li>
+  </ul>
+  
+# License
 The MIT License (MIT). Please see License File for more information.
