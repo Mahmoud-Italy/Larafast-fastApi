@@ -154,7 +154,7 @@ class Blog extends Model
     public function getImageAttribute()
     {
         // $img = upload image ..
-        return self::image()->save($img);
+        // return self::image()->save($img);
     }
 
     // fetch Data
