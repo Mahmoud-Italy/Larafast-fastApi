@@ -181,7 +181,7 @@ class Blog extends Model
 
           // order By..
           if(isset($value['order'])) {
-            $obj->orderBy('id', $value['sort']);
+            $obj->orderBy('id', $value['order']);
           } else {
             $obj->orderBy('id', 'DESC');
           }
