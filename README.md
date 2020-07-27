@@ -1,4 +1,4 @@
-# Larafast FastApi
+# Larafast FastAPI
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Mahmoud-Italy/Larafast-fastApi/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Mahmoud-Italy/Larafast-fastApi/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/Mahmoud-Italy/Larafast-fastApi/badges/build.png?b=master)](https://scrutinizer-ci.com/g/Mahmoud-Italy/Larafast-fastApi/build-status/master)
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/Mahmoud-Italy/Larafast-fastApi/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
