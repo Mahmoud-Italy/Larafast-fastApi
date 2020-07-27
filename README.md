@@ -54,7 +54,7 @@ use App\Blog;
 use Illuminate\Http\Request;
 use App\Http\Requests\BlogUpdateRequest;
 use App\Http\Requests\BlogStoreRequest;
-use App\Http\Resources\BlogResources;
+use App\Http\Resources\BlogResource;
 
 class BlogController extends Controller
 {
@@ -65,7 +65,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $rows = BlogResources::collection(Blog::fetchData(request()->all()));
+        $rows = BlogResource::collection(Blog::fetchData(request()->all()));
         return response()->json(['data' => $rows], 200);
     }
 
@@ -93,7 +93,7 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
-        $row = new BlogResources(Blog::find($blog));
+        $row = new BlogResource(Blog::findOrFail($blog));
         return response()->json(['row' => $row], 200);
     }
 
@@ -151,10 +151,10 @@ class Blog extends Model
     }
 
     // handle attributes
-    public function getImageAttribute()
-    {
-        // $img = upload image ..
-        // return image()->save($img);
+    public function setImageAttribute($value){
+         $imageName = time().'.'.$value->extension();  
+         $value->move(public_path('uploads'), $imageName);
+         $this->image()->save($imageName);
     }
 
     // fetch Data
@@ -162,21 +162,21 @@ class Blog extends Model
     {
         $obj = self::query();
 
-          // langauges..
+          // langauges in case you use multilanguages transactions package..
           if(isset($value['locale'])) {
              app()->setLocale($value['locale']);
           }
 
-          // search..
+          // search for multiple columns..
           if(isset($value['search'])) {
             $obj->where(function($q){
-                $q->where('title', 'like','%'.$value['search'].'%')
-                $q->orWhere('body', 'like', '%'.$value['search'].'%')
+                $q->where('title', 'like','%'.$value['search'].'%');
+                $q->orWhere('body', 'like', '%'.$value['search'].'%');
                 $q->orWhere('id', $value['search']);
             });
           }
 
-          // order..
+          // order By..
           if(isset($value['order'])) {
             $obj->orderBy('id', $value['sort']);
           } else {
@@ -199,13 +199,47 @@ class Blog extends Model
 
 
 
+
+# Snapshot of Blog Resource
+<pre>
+namespace App\Resources;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class BlogResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function toArray($request)
+    {
+        return [
+            'id'            => $this->id,
+            'encrypt_id'    => encrypt($this->id),
+            'image'         => ($this->image) ? $this->image->url : NULL,
+
+            // 'title'      => $this->title,
+            // 'body'       => $this->body,
+
+            'dateForHumans' => $this->created_at->diffForHumans(),
+            'timestamp'     => $this->created_at
+        ];
+    }
+}
+</pre>
+
+
+
 Now add the necessary fields and run
 
 <pre>php artisan migrate</pre>
 And that saved you an hour worth of repetitive and boring work which you can spend on more important development challenges.
 
 # Security
-If you discover any security related issues, please email mahmoud.italy@outlook.com instead of using the issue tracker.
+If you discover any security related issues, please email mahmoud.italy@outlook.com.
 
 # Credits
 

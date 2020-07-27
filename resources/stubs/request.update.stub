@@ -25,13 +25,13 @@ class DummyClass extends FormRequest
     {
         $id = $this->route()->parameter('$modelSlug$')->id;
 
-        /**
-         * Usage of id
-         * 'username' => 'required|unique:users,username,' . $id,
-         */
-
         return [
             'id' => 'required|unique:$modelTable$,id,' . $id,
         ];
+    }
+
+    protected function formatErrors (Validator $validator)
+    {
+        return ['message' => $validator->errors()->first()];
     }
 }

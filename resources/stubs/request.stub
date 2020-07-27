@@ -27,4 +27,9 @@ class DummyClass extends FormRequest
             //
         ];
     }
+
+    protected function formatErrors (Validator $validator)
+    {
+        return ['message' => $validator->errors()->first()];
+    }
 }
