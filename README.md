@@ -205,7 +205,7 @@ class Blog extends Model
 
 # Snapshot of Blog Resource
 <pre>
-namespace App\Resources;
+namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
