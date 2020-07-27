@@ -3,7 +3,7 @@
 [![Build Status](https://scrutinizer-ci.com/g/Mahmoud-Italy/Larafast-fastApi/badges/build.png?b=master)](https://scrutinizer-ci.com/g/Mahmoud-Italy/Larafast-fastApi/build-status/master)
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/Mahmoud-Italy/Larafast-fastApi/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
 
-![fast-api-logo](fast-api-logo.webp)
+![fast-api-logo](fast-api-logo.png)
 
 
 # What does mean FastAPI:
