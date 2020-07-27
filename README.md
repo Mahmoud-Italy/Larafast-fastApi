@@ -10,7 +10,7 @@
 A Fastapi Laravel package to help you generate CRUD API Controllers and Resources, Model.. etc
 
 # What actually do?
-Suppose you are building an api, and you want to create controller and resources and model and factory.. etc, then you have to do a ton of other tedious and to be honest, boring things like creating migrations, model factories, the controller, form validation and adding all !.
+Suppose you are building an api, and you want to create controller and resources and model and factory.. etc, then you have to do a ton of other tedious and to be honest, boring things like creating migrations, model factories, the controller, form validation and adding all.
 
 So what FastAPI does is when you tell it the model name, it will do all those boring things. When it's done you have the following:
 <ul>
