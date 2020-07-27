@@ -27,6 +27,8 @@ class DummyClass extends FormRequest
 
         return [
             'id' => 'required|unique:$modelTable$,id,' . $id,
+            // 'title' => 'required',
+            // 'image' => 'required|mimes:jpeg,jpg,png,gif|max:10000, // max 10MB
         ];
     }
 
