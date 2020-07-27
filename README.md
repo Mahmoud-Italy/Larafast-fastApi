@@ -140,8 +140,9 @@ class BlogController extends Controller
 <pre>
 namespace App;
 
+// use Stroage;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+// use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Blog extends Model
 {
@@ -150,19 +151,20 @@ class Blog extends Model
 
     // imageable polymorphic
     public function image() {
-        // return $this->morphOne(Image::class, 'imageable');
+        return $this->morphOne(Image::class, 'imageable');
     }
 
     // handle attributes
     public function setImageAttribute($value){
-         $imageName = time().'.'.$value->extension();  
-         $value->move(public_path('uploads'), $imageName);
-         $this->image()->save($imageName);
+        $imageName = time().'.'.$value->extension();  
+        Storage::disk('public')->put('uploads/'.$imageName, $value);
+        $this->image()->save($imageName);
     }
 
     // fetch Data
     public static function fetchData($value='')
     {
+        // this way will fire up speed of the query
         $obj = self::query();
 
           // langauges in case you use multilanguages transactions package..
