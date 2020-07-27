@@ -16,12 +16,14 @@ class DummyClass extends JsonResource
     {
         return [
             'id'            => $this->id,
+            'encrypt_id'    => encrypt($this->id),
+            'image'         => ($this->image) ? $this->image->url : NULL,
 
             // 'title'      => $this->title,
             // 'body'       => $this->body,
 
             'dateForHumans' => $this->created_at->diffForHumans(),
-            'timestamp'     => $this->created_at,
+            'timestamp'     => $this->created_at
         ];
     }
 }

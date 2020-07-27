@@ -6,7 +6,7 @@ use DummyFullModelClass;
 use Illuminate\Http\Request;
 use App\Http\Requests\DummyModelClassUpdateRequest;
 use App\Http\Requests\DummyModelClassStoreRequest;
-use App\Http\Resources\DummyModelClassResources;
+use App\Http\Resources\DummyModelClassResource;
 use DummyRootNamespaceHttp\Controllers\Controller;
 
 class DummyClass extends Controller
@@ -18,7 +18,7 @@ class DummyClass extends Controller
      */
     public function index()
     {
-        $rows = DummyModelClassResources::collection(DummyModelClass::fetchData(request()->all()));
+        $rows = DummyModelClassResource::collection(DummyModelClass::fetchData(request()->all()));
         return response()->json(['data' => $rows], 200);
     }
 
@@ -46,7 +46,7 @@ class DummyClass extends Controller
      */
     public function show(DummyModelClass $DummyModelVariable)
     {
-        $row = new DummyModelClassResources(DummyModelClass::find($DummyModelVariable));
+        $row = new DummyModelClassResource(DummyModelClass::find($DummyModelVariable));
         return response()->json(['row' => $row], 200);
     }
 
