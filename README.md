@@ -246,9 +246,6 @@ Now add the necessary fields and run
 <pre>php artisan migrate</pre>
 And that saved you an hour worth of repetitive and boring work which you can spend on more important development challenges.
 
-# Security
-If you discover any security related issues, please email mahmoud.italy@outlook.com.
-
 # Credits
 
   <ul>
