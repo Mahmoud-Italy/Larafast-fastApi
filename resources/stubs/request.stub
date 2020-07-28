@@ -29,6 +29,7 @@ class DummyClass extends FormRequest
         ];
     }
 
+    // in case you want to return single line of error instead of array of errors..
     protected function formatErrors (Validator $validator)
     {
         return ['message' => $validator->errors()->first()];
