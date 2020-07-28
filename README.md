@@ -28,6 +28,9 @@ So what FastAPI does is when you tell it the model name, it will do all those bo
 # Then publish the config
 <pre>php artisan vendor:publish --tag=fastApi</pre>
 
+# For Lumen
+Just Add this line into bootstrap/app.php
+<pre>$app->register(Larafast\Fastapi\FastapiServiceProvider::class);</pre>
 
 # Example
 <pre>php artisan fastApi Blog</pre>
