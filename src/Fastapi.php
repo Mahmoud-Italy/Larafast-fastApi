@@ -4,5 +4,5 @@ namespace Larafast\Fastapi;
 
 class Fastapi
 {
-    // Build your next great package.
+    // Build your next great package..
 }
