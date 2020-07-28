@@ -23,7 +23,7 @@ So what FastAPI does is when you tell it the model name, it will do all those bo
 </ul>
 
 # Installation
-<pre>composer require larafast/fastapi --dev</pre>
+<pre>composer require larafast/fastapi</pre>
 
 # Then publish the config
 <pre>php artisan vendor:publish --tag=fastApi</pre>
