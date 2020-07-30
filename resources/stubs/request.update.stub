@@ -23,7 +23,8 @@ class DummyClass extends FormRequest
      */
     public function rules()
     {
-        $id = $this->route()->parameter('$modelSlug$')->id;
+        //$id = $this->route()->parameter('$modelSlug$')->id; // not working in some cases
+        $id = request('id');
 
         return [
             'id' => 'required|unique:$modelTable$,id,' . $id,
