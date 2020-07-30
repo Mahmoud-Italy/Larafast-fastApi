@@ -72,7 +72,7 @@ class BlogController extends Controller
     public function index()
     {
         $rows = BlogResource::collection(Blog::fetchData(request()->all()));
-        return response()->json(['data' => $rows], 200);
+        return response()->json(['rows' => $rows], 200);
     }
 
     /**
@@ -87,7 +87,7 @@ class BlogController extends Controller
             Blog::create($request->all());
             return response()->json(['message' => ''], 201);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Unable to create entry, '. $e->getMessage()], 500);
+            return response()->json(['message' => 'Unable to create entry, ' . $e->getMessage()], 500);
         }
     }
 
@@ -116,7 +116,7 @@ class BlogController extends Controller
             $blog->update($request->all());
             return response()->json(['message' => ''], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Unable to update entry, '. $e->getMessage()], 500);
+            return response()->json(['message' => 'Unable to update entry, ' . $e->getMessage()], 500);
         }
     }
 
@@ -132,7 +132,7 @@ class BlogController extends Controller
             $blog->delete();
             return response()->json(['message' => ''], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Unable to delete entry, '. $e->getMessage()], 500);
+            return response()->json(['message' => 'Unable to delete entry, ' . $e->getMessage()], 500);
         }
     }
 }
