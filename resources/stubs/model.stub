@@ -30,13 +30,13 @@ class DummyClass extends Model
         $obj = self::query();
 
           // langauges in case you use multilanguages transactions package..
-          // if(isset($value['locale'])) {
+          // if(isset($value['locale']) && $value['search']) {
           //   app()->setLocale($value['locale']);
           // }
 
           // search for multiple columns..
-          // if(isset($value['search'])) {
-          //   $obj->where(function($q){
+          // if(isset($value['search']) && $value['search']) {
+          //   $obj->where(function($q) use ($value) {
           //       $q->where('title', 'like','%'.$value['search'].'%');
           //       $q->orWhere('body', 'like', '%'.$value['search'].'%');
           //       $q->orWhere('id', $value['search']);
@@ -44,7 +44,7 @@ class DummyClass extends Model
           // }
 
           // order By..
-          // if(isset($value['order'])) {
+          // if(isset($value['order']) && $value['order']) {
           //   $obj->orderBy('id', $value['order']);
           // } else {
           //   $obj->orderBy('id', 'DESC');
