@@ -177,7 +177,7 @@ class Blog extends Model
 
           // search for multiple columns..
           if(isset($value['search'])) {
-            $obj->where(function($q){
+            $obj->where(function($q) use ($value){
                 $q->where('title', 'like','%'.$value['search'].'%');
                 $q->orWhere('body', 'like', '%'.$value['search'].'%');
                 $q->orWhere('id', $value['search']);
