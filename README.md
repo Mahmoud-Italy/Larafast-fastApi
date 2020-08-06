@@ -2,7 +2,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Mahmoud-Italy/Larafast-fastApi/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Mahmoud-Italy/Larafast-fastApi/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/Mahmoud-Italy/Larafast-fastApi/badges/build.png?b=master)](https://scrutinizer-ci.com/g/Mahmoud-Italy/Larafast-fastApi/build-status/master)
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/Mahmoud-Italy/Larafast-fastApi/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
-
+<a href="https://packagist.org/packages/laravel/telescope"><img src="https://poser.pugx.org/laravel/telescope/d/total.svg" alt="Total Downloads"></a>
 ![fast-api](assets/background.jpg)
 
 
