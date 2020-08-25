@@ -4,8 +4,7 @@ namespace DummyNamespace;
 
 use DummyFullModelClass;
 use Illuminate\Http\Request;
-use App\Http\Requests\DummyModelClassUpdateRequest;
-use App\Http\Requests\DummyModelClassStoreRequest;
+use App\Http\Requests\DummyModelClassRequest;
 use App\Http\Resources\DummyModelClassResource;
 use DummyRootNamespaceHttp\Controllers\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -31,10 +30,10 @@ class DummyClass extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  DummyModelClassStoreRequest  $request
+     * @param  DummyModelClassRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(DummyModelClassStoreRequest $request)
+    public function store(DummyModelClassRequest $request)
     {
         try {
             DummyModelClass::create($request->all());
@@ -50,23 +49,23 @@ class DummyClass extends Controller
      * @param  \DummyModelClass  $DummyModelVariable
      * @return \Illuminate\Http\Response
      */
-    public function show(DummyModelClass $DummyModelVariable)
+    public function show($id)
     {
-        $row = new DummyModelClassResource(DummyModelClass::find($DummyModelVariable));
+        $data = new DummyModelClassResource(DummyModelClass::find($id));
         return response()->json(['data' => $row], 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  DummyModelClassUpdateRequest  $request
+     * @param  DummyModelClassRequest  $request
      * @param  \DummyFullModelClass  $DummyModelVariable
      * @return \Illuminate\Http\Response
      */
-    public function update(DummyModelClassUpdateRequest $request, DummyModelClass $DummyModelVariable)
+    public function update(DummyModelClassRequest $request, $id)
     {
         try {
-            $DummyModelVariable->update($request->all());
+            DummyModelClass::find($id)->update($request->all());
             return response()->json(['message' => ''], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Unable to update entry, ' . $e->getMessage()], 500);
