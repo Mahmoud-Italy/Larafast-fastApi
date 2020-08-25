@@ -23,7 +23,7 @@ class DummyClass extends JsonResource
             // 'body'       => $this->body,
 
             'dateForHumans' => $this->created_at->diffForHumans(),
-            'timestamp'     => $this->created_at
+            'created_at'     => $this->created_at
         ];
     }
 }

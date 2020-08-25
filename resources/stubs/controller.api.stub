@@ -8,6 +8,7 @@ use App\Http\Requests\DummyModelClassUpdateRequest;
 use App\Http\Requests\DummyModelClassStoreRequest;
 use App\Http\Resources\DummyModelClassResource;
 use DummyRootNamespaceHttp\Controllers\Controller;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class DummyClass extends Controller
 {
@@ -18,8 +19,13 @@ class DummyClass extends Controller
      */
     public function index()
     {
-        $rows = DummyModelClassResource::collection(DummyModelClass::fetchData(request()->all()));
-        return response()->json(['data' => $rows], 200);
+        $cars = QueryBuilder::for(DummyModelClass::where('active', 1))
+            ->allowedFilters('')
+            ->defaultSort('')
+            ->allowedSorts('')
+            ->paginate($request->perPage ?? 10);
+
+        return response()->json(DummyModelClassResource::collection($cars)->response()->getData(true), 200);
     }
 
     /**

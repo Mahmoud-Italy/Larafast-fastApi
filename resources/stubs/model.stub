@@ -2,7 +2,6 @@
 
 namespace DummyNamespace;
 
-//use Storage;
 use Illuminate\Database\Eloquent\Model;
 //use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -11,53 +10,13 @@ class DummyClass extends Model
     // use SoftDeletes;
     protected $guarded = [];
 
-    // imageable polymorphic
-    // public function image() {
-    //     return $this->morphOne(Image::class, 'imageable');
-    // }
+    protected $fillable = [
 
-    // handle attributes
-    // public function setImageAttribute($value){
-    //     $imageName = time().'.'.$value->extension();  
-    //     Storage::disk('public')->put('uploads/'.$imageName, $value);
-    //     $this->image()->save($imageName);
-    // }
+    ];
 
-    // fetch Data
-    public static function fetchData($value='')
-    {
-        // this way will fire up speed of the query
-        $obj = self::query();
+    protected $dates = [
+        'created_at', 'updated_at',
+    ];
 
-          // langauges in case you use multilanguages transactions package..
-          // if(isset($value['locale']) && $value['search']) {
-          //   app()->setLocale($value['locale']);
-          // }
-
-          // search for multiple columns..
-          // if(isset($value['search']) && $value['search']) {
-          //   $obj->where(function($q) use ($value) {
-          //       $q->where('title', 'like','%'.$value['search'].'%');
-          //       $q->orWhere('body', 'like', '%'.$value['search'].'%');
-          //       $q->orWhere('id', $value['search']);
-          //     });
-          // }
-
-          // order By..
-          // if(isset($value['order']) && $value['order']) {
-          //   $obj->orderBy('id', $value['order']);
-          // } else {
-          //   $obj->orderBy('id', 'DESC');
-          // }
-
-
-
-          // feel free to add any query filter as much as you want...
-
-
-
-        $obj = $obj->paginate($value['paginate'] ?? 10);
-        return $obj;
-    }
 
 }
