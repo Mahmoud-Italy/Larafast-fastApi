@@ -61,6 +61,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\BlogUpdateRequest;
 use App\Http\Requests\BlogStoreRequest;
 use App\Http\Resources\BlogResource;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class BlogController extends Controller
 {
@@ -71,8 +72,19 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $rows = BlogResource::collection(Blog::fetchData(request()->all()));
-        return response()->json(['rows' => $rows], 200);
+        // new improvment
+        $rows = QueryBuilder::for(Blog::where('active', 1))
+            ->allowedFilters('')
+            ->defaultSort('')
+            ->allowedSorts('')
+            ->paginate($request->perPage ?? 10);
+
+        return response()->json(BlogResource::collection($rows)->response()->getData(true), 200);
+           
+        <!--
+            $rows = BlogResource::collection(Blog::fetchData(request()->all()));
+            return response()->json(['rows' => $rows], 200);
+        -->
     }
 
     /**
