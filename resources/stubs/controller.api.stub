@@ -78,10 +78,10 @@ class DummyClass extends Controller
      * @param  \DummyFullModelClass  $DummyModelVariable
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DummyModelClass $DummyModelVariable)
+    public function destroy($id)
     {
         try {
-            $DummyModelVariable->delete();
+            $DummyModelVariable->find($id)->delete();
             return response()->json(['message' => ''], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Unable to delete entry, ' . $e->getMessage()], 500);
