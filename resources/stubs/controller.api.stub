@@ -11,6 +11,15 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class DummyClass extends Controller
 {
+    function __construct()
+    {
+        // $this->middleware('permission:view_'.$DummyModelVariable, ['only' => ['index', 'show', 'export']]);
+        // $this->middleware('permission:add_'.$DummyModelVariable,  ['only' => ['store']]);
+        // $this->middleware('permission:edit_'.$DummyModelVariable, 
+        //                         ['only' => ['update', 'active', 'inactive', 'trash', 'restore']]);
+        // $this->middleware('permission:delete_'.$DummyModelVariable, ['only' => ['destroy']]);
+    }
+    
     /**
      * Display a listing of the resource.
      *
