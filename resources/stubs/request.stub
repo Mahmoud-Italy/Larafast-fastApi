@@ -17,6 +17,20 @@ class DummyClass extends FormRequest
     }
 
     /**
+    * Prepare the data for validation if the data comes in json format
+    *
+    * @return void
+    */
+    /*
+    protected function prepareForValidation()
+    {
+        collect(json_decode($this->data, true))->each(function ($row, $key) {
+            $this->merge([$key => $row]);
+        });
+    }
+    */
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
