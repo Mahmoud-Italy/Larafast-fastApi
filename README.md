@@ -65,6 +65,13 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class BlogController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:view_blogs', ['only' => ['index', 'show']]);
+        $this->middleware('permission:add_blogs',  ['only' => ['store']]);
+        $this->middleware('permission:edit_blogs', ['only' => ['update']]);
+        $this->middleware('permission:delete_blogs', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *
