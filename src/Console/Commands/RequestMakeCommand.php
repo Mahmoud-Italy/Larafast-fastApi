@@ -36,11 +36,7 @@ class RequestMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        if (!$this->option('type') || $this->option('type') == 'store') {
-            return config('fastApi.stubs_dir') . '/request.stub';
-        }
-
-        return config('fastApi.stubs_dir') . '/request.update.stub';
+        return config('fastApi.stubs_dir') . '/request.stub';
     }
 
     protected function buildClass($name)
@@ -78,8 +74,7 @@ class RequestMakeCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['model', 'm', InputOption::VALUE_REQUIRED, 'The given model.'],
-            ['type', 't', InputOption::VALUE_OPTIONAL, 'Type of request. Values can be store or update'],
+            ['model', 'm', InputOption::VALUE_REQUIRED, 'The given model.']
         ];
     }
 }

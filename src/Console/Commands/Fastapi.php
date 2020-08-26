@@ -75,9 +75,7 @@ class Fastapi extends GeneratorCommand
 
         $this->type = 'Request';
 
-        $this->createRequest('Store');
-
-        $this->createRequest('Update');
+        $this->createRequest();
 
         $this->createResource();
     }
@@ -146,18 +144,17 @@ class Fastapi extends GeneratorCommand
     /**
      * Create a controller for the model.
      *
-     * @param string $requestType
+     * @param string
      *
      * @return void
      */
-    protected function createRequest($requestType = 'Store')
+    protected function createRequest()
     {
         $model = Str::studly(class_basename($this->argument('name')));
-        $name = "{$model}{$requestType}Request";
+        $name = "{$model}Request";
         $this->call('fastApi:request', [
             'name' => $name,
             '--model' => $model,
-            '--type' => Str::slug($requestType),
         ]);
     }
 
