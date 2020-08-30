@@ -3,6 +3,7 @@
 namespace DummyNamespace;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class DummyClass extends FormRequest
 {
