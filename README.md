@@ -17,7 +17,7 @@ So what FastAPI does is when you tell it the model name, it will do all those bo
     <li>Blog.php</li>
     <li>BlogController.php ship with code already exists</li>
     <li>BlogStoreRequest.php and BlogUpdateRequest.php</li>
-    <li>BlogResoure.php</li>
+    <li>BlogResource.php</li>
     <li>Timestamped create_blogs_table.php migration file</li>
     <li>BlogFactory.php</li>
 </ul>
