@@ -32,7 +32,7 @@ class DummyClass extends Controller
         $defaultSort = ['id'];
         $allowedSorts = ['id'];
 
-        return $this->ApiIndex(DummyModelClass::class, function ($collection) {
+        return $this->ApiIndex(DummyModelClass::query(), function ($collection) {
             if (request()->wantsJson()) {
                 return response()->json(DummyModelClassResource::collection($collection)->response()->getData(true), 200);
             }

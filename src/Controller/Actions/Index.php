@@ -3,6 +3,7 @@
 namespace Larafast\Fastapi\Controller\Actions;
 
 use Closure;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -17,9 +18,9 @@ trait Index
      * @param array|string[] $allowedSorts
      * @return JsonResponse
      */
-    public function ApiIndex(string $model, $callback, bool $getAll = false, array $allowedFilters = ['id'], array $defaultSort = ['id'], array $allowedSorts = ['id'])
+    public function ApiIndex(Builder $model, $callback, bool $getAll = false, array $allowedFilters = [], array $defaultSort = [], array $allowedSorts = [])
     {
-        $rows = QueryBuilder::for($model::query())
+        $rows = QueryBuilder::for($model)
             ->allowedFilters($allowedFilters)
             ->defaultSort($defaultSort)
             ->allowedSorts($allowedSorts);
