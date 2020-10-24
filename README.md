@@ -113,10 +113,10 @@ class BlogController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Blog  $blog
+     * @param  $blog
      * @return \Illuminate\Http\Response
      */
-    public function show(Blog $blog)
+    public function show($blog)
     {
         $row = new BlogResource(Blog::findOrFail($blog));
         return response()->json(['row' => $row], 200);
