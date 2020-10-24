@@ -84,7 +84,7 @@ class BlogController extends Controller
             ->allowedFilters('')
             ->defaultSort('')
             ->allowedSorts('')
-            ->paginate($request->perPage ?? 10);
+            ->paginate(request()->get('perPage',10);
 
         return response()->json(BlogResource::collection($rows)->response()->getData(true), 200);
            
@@ -113,10 +113,10 @@ class BlogController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Blog  $blog
+     * @param  $blog
      * @return \Illuminate\Http\Response
      */
-    public function show(Blog $blog)
+    public function show($blog)
     {
         $row = new BlogResource(Blog::findOrFail($blog));
         return response()->json(['row' => $row], 200);
@@ -125,7 +125,7 @@ class BlogController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  OrderUpdateRequest  $request
+     * @param  BlogUpdateRequest  $request
      * @param  \App\Blog  $blog
      * @return \Illuminate\Http\Response
      */

@@ -40,10 +40,9 @@ class ModelMakeCommand extends GeneratorCommand
             return;
         }
         if ($this->option('all')) {
-            $this->input->setOption('factory', true);
-            $this->input->setOption('migration', true);
-            $this->input->setOption('controller', true);
-            $this->input->setOption('resource', true);
+            foreach (['factory','migration','controller','resource'] as $item) {
+                $this->input->setOption($item, true);
+            }
         }
 
         if ($this->option('factory')) {

@@ -75,9 +75,10 @@ class Fastapi extends GeneratorCommand
 
         $this->type = 'Request';
 
-        $this->createRequest();
+        $this->createRequest(true);
 
         $this->createResource();
+        $this->createCollection();
     }
 
     /**
@@ -123,7 +124,7 @@ class Fastapi extends GeneratorCommand
         $modelName = $this->qualifyClass($this->getNameInput());
 
         $args = [
-            'name' => "{$controller}Controller",
+            'name' => "{$controller}\\{$controller}Controller",
             '--model' => $modelName,
         ];
 
@@ -148,16 +149,33 @@ class Fastapi extends GeneratorCommand
      *
      * @return void
      */
-    protected function createRequest()
+    protected function createRequest(bool $createBoth=false)
     {
         $model = Str::studly(class_basename($this->argument('name')));
-        $name = "{$model}Request";
-        $this->call('fastApi:request', [
+        $basename="{$model}\\{$model}";
+        if ($createBoth) {
+
+            // Create Request
+            $create = "{$basename}StoreRequest";
+            $this->callRequest($create,$model);
+
+            // Update Request
+            $update = "{$basename}UpdateRequest";
+            $this->callRequest($update,$model);
+
+        }else{
+            $name = "{$basename}Request";
+            $this->callRequest($name,$model);
+        }
+    }
+
+    public function callRequest($name,$model)
+    {
+       return $this->call('fastApi:request', [
             'name' => $name,
             '--model' => $model,
         ]);
     }
-
     /**
      * Get the stub file for the generator.
      *
@@ -196,8 +214,20 @@ class Fastapi extends GeneratorCommand
         $resource = Str::studly(class_basename($this->argument('name')));
 
         $this->call('fastApi:resource', [
-            'name' => "{$resource}Resource",
+            'name' => "$resource\\{$resource}Resource",
             '--model' => $this->argument('name'),
+        ]);
+    }
+    /**
+     * Create a model resource for the model.
+     *
+     * @return void
+     */
+    protected function createCollection()
+    {
+        $collection = Str::studly(class_basename($this->argument('name')));
+        $this->call('make:resource', [
+            'name' => "{$collection}\\{$collection}Collection",
         ]);
     }
 }

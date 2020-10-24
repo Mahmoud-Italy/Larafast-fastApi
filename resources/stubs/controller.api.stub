@@ -1,99 +1,103 @@
 <?php
-
 namespace DummyNamespace;
 
 use DummyFullModelClass;
-use Illuminate\Http\Request;
-use App\Http\Requests\DummyModelClassRequest;
-use App\Http\Resources\DummyModelClassResource;
+//use Illuminate\Http\Request;
+use App\Http\Requests\DummyModelClass\{DummyModelClassStoreRequest,DummyModelClassUpdateRequest};
+use App\Http\Resources\DummyModelClass\{DummyModelClassResource,DummyModelClassCollection};
 use DummyRootNamespaceHttp\Controllers\Controller;
-use Spatie\QueryBuilder\QueryBuilder;
+use Larafast\Fastapi\Controller\Actions\{Destroy, Index, Show, Store, Update};
+use Exception;
+use Illuminate\Http\JsonResponse;
 
 class DummyClass extends Controller
 {
+    use Index,Update,Destroy,Store,Show;
     function __construct()
     {
         // $this->middleware('permission:view_'.$DummyModelVariable, ['only' => ['index', 'show', 'export']]);
         // $this->middleware('permission:add_'.$DummyModelVariable,  ['only' => ['store']]);
-        // $this->middleware('permission:edit_'.$DummyModelVariable, 
+        // $this->middleware('permission:edit_'.$DummyModelVariable,
         //                         ['only' => ['update', 'active', 'inactive', 'trash', 'restore']]);
         // $this->middleware('permission:delete_'.$DummyModelVariable, ['only' => ['destroy']]);
     }
-    
+
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function index()
     {
-        $cars = QueryBuilder::for(DummyModelClass::where('active', 1))
-            ->allowedFilters('')
-            ->defaultSort('')
-            ->allowedSorts('')
-            ->paginate($request->perPage ?? 10);
+        $allowedFilters = ['id'];
+        $defaultSort = ['id'];
+        $allowedSorts = ['id'];
 
-        return response()->json(DummyModelClassResource::collection($cars)->response()->getData(true), 200);
+        return $this->ApiIndex(DummyModelClass::query(), function ($collection) {
+            if (request()->wantsJson()) {
+                return response()->json(DummyModelClassResource::collection($collection)->response()->getData(true), 200);
+            }
+            return view('index', compact('collection'));
+        }, false, $allowedFilters, $defaultSort, $allowedSorts);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  DummyModelClassRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param DummyModelClassStoreRequest $request
+     * @return JsonResponse|mixed
      */
-    public function store(DummyModelClassRequest $request)
+    public function store(DummyModelClassStoreRequest $request)
+    {
+        $validated = $request->validated();
+        // handel Upload Image Here Or in Request
+        return $this->ApiStore(DummyModelClass::class, $validated, function ($model) use ($request) {
+            if ($request->wantsJson()) {
+                //handel attached data or anything
+                return response()->json(new DummyModelClassResource($model), 200);
+            }
+            // handel your back response
+            return back()->with(["message" => "Created Successfully"]);
+        });
+    }
+
+    /**
+     * @param $DummyModelVariable
+     * @return DummyModelClassResource|JsonResponse
+     */
+    public function show($DummyModelVariable)
     {
         try {
-            DummyModelClass::create($request->all());
-            return response()->json(['message' => ''], 201);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Unable to create entry, ' . $e->getMessage()], 500);
+            return new DummyModelClassResource($this->ApiShow(DummyModelClass::class, $DummyModelVariable));
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Unable to show entry, ' . (config('app.debug', true) ? $e->getMessage() : ' Debug is False ')], 500);
         }
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \DummyFullModelClass  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @param DummyModelClassUpdateRequest $request
+     * @param $DummyModelVariable
+     * @return JsonResponse|mixed
      */
-    public function show($id)
+    public function update(DummyModelClassUpdateRequest $request, $DummyModelVariable)
     {
-        $data = new DummyModelClassResource(DummyModelClass::find($id));
-        return response()->json(['data' => $row], 200);
+        $model = $this->ApiShow(DummyModelClass::class, $DummyModelVariable);
+        $validated = $request->validated();
+        // handel Upload Image Here Or in Request
+        return $this->ApiUpdate($model, $validated, function ($model, $updatedResponse) use ($request) {
+            if ($request->wantsJson()) {
+                return response()->json(new DummyModelClassResource($model), 200);
+            }
+            // handel your back response
+            return back()->with(["message" => "Updated Successfully"]);
+        });
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  DummyModelClassRequest  $request
-     * @param  \DummyFullModelClass  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @param $DummyModelVariable
+     * @return JsonResponse
      */
-    public function update(DummyModelClassRequest $request, $id)
+    public function destroy($DummyModelVariable)
     {
-        try {
-            DummyModelClass::find($id)->update($request->all());
-            return response()->json(['message' => ''], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Unable to update entry, ' . $e->getMessage()], 500);
-        }
-    }
+        $model = $this->ApiShow(DummyModelClass::class, $DummyModelVariable);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \DummyFullModelClass  $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function destroy($id)
-    {
-        try {
-            $DummyModelVariable->find($id)->delete();
-            return response()->json(['message' => ''], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Unable to delete entry, ' . $e->getMessage()], 500);
-        }
+        return $this->ApiDestroy($model);
     }
 }
