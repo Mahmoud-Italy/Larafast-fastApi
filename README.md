@@ -125,7 +125,7 @@ class BlogController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  OrderUpdateRequest  $request
+     * @param  BlogUpdateRequest  $request
      * @param  \App\Blog  $blog
      * @return \Illuminate\Http\Response
      */
