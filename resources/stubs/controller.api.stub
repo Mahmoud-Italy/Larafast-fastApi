@@ -4,96 +4,73 @@ namespace DummyNamespace;
 
 use DummyFullModelClass;
 use Illuminate\Http\Request;
-use App\Http\Requests\DummyModelClassRequest;
+use App\Http\Requests\DummyModelClassUpdateRequest;
+use App\Http\Requests\DummyModelClassStoreRequest;
 use App\Http\Resources\DummyModelClassResource;
 use DummyRootNamespaceHttp\Controllers\Controller;
-use Spatie\QueryBuilder\QueryBuilder;
 
 class DummyClass extends Controller
 {
+    
     function __construct()
     {
-        // $this->middleware('permission:view_'.$DummyModelVariable, ['only' => ['index', 'show', 'export']]);
-        // $this->middleware('permission:add_'.$DummyModelVariable,  ['only' => ['store']]);
-        // $this->middleware('permission:edit_'.$DummyModelVariable, 
-        //                         ['only' => ['update', 'active', 'inactive', 'trash', 'restore']]);
-        // $this->middleware('permission:delete_'.$DummyModelVariable, ['only' => ['destroy']]);
+        // $this->middleware('permission:view_blogs', ['only' => ['index', 'show']]);
+        // $this->middleware('permission:add_blogs',  ['only' => ['store']]);
+        // $this->middleware('permission:edit_blogs', ['only' => ['update']]);
+        // $this->middleware('permission:delete_blogs', ['only' => ['destroy']]);
     }
-    
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function index()
     {
-        $cars = QueryBuilder::for(DummyModelClass::where('active', 1))
-            ->allowedFilters('')
-            ->defaultSort('')
-            ->allowedSorts('')
-            ->paginate($request->perPage ?? 10);
-
-        return response()->json(DummyModelClassResource::collection($cars)->response()->getData(true), 200);
+        $rows = DummyModelClassResource::collection(DummyModelClass::fetchData(request()->all()));
+        return response()->json(['rows' => $rows], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  DummyModelClassRequest  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function store(DummyModelClassRequest $request)
+    public function store(DummyModelClassStoreRequest $request)
     {
-        try {
-            DummyModelClass::create($request->all());
+        $row = DummyModelClass::createOrUpdate(NULL, request()->all());
+        if($row === true) {
             return response()->json(['message' => ''], 201);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Unable to create entry, ' . $e->getMessage()], 500);
+        } else {
+            return response()->json(['message' => 'Unable to create entry ' . $row], 500);
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \DummyFullModelClass  $id
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function show($id)
     {
-        $data = new DummyModelClassResource(DummyModelClass::find($id));
-        return response()->json(['data' => $row], 200);
+        $row = new DummyModelClassResource(DummyModelClass::findOrFail(decrypt($id)));
+        return response()->json(['row' => $row], 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  DummyModelClassRequest  $request
-     * @param  \DummyFullModelClass  $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function update(DummyModelClassRequest $request, $id)
+    public function update(DummyModelClassUpdateRequest $request, $id)
     {
-        try {
-            DummyModelClass::find($id)->update($request->all());
+        $row = DummyModelClass::createOrUpdate(decrypt($id), request()->all());
+        if($row === true) {
             return response()->json(['message' => ''], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Unable to update entry, ' . $e->getMessage()], 500);
+        } else {
+            return response()->json(['message' => 'Unable to update entry ' . $row], 500);
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \DummyFullModelClass  $id
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function destroy($id)
     {
         try {
-            $DummyModelVariable->find($id)->delete();
+            $row = DummyModelClass::query();
+
+            // can work with multi select item to delete..
+            if(strpos($id, ',') !== false) {
+                foreach(explode(',',$id) as $sid) {
+                    $ids[] = $sid;
+                }
+                $row->whereIN('id', $ids);
+            } else {
+                $row->where('id', $id);
+            }   
+            $row->delete();
+
             return response()->json(['message' => ''], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Unable to delete entry, ' . $e->getMessage()], 500);
+            return response()->json(['message' => 'Unable to delete entry, '. $e->getMessage()], 500);
         }
     }
 }
