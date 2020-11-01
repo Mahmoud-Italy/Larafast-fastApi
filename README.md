@@ -61,97 +61,70 @@ use Illuminate\Http\Request;
 use App\Http\Requests\BlogUpdateRequest;
 use App\Http\Requests\BlogStoreRequest;
 use App\Http\Resources\BlogResource;
-use Spatie\QueryBuilder\QueryBuilder;
 
 class BlogController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:view_blogs', ['only' => ['index', 'show']]);
-        $this->middleware('permission:add_blogs',  ['only' => ['store']]);
-        $this->middleware('permission:edit_blogs', ['only' => ['update']]);
-        $this->middleware('permission:delete_blogs', ['only' => ['destroy']]);
+        // $this->middleware('permission:view_blogs', ['only' => ['index', 'show']]);
+        // $this->middleware('permission:add_blogs',  ['only' => ['store']]);
+        // $this->middleware('permission:edit_blogs', ['only' => ['update']]);
+        // $this->middleware('permission:delete_blogs', ['only' => ['destroy']]);
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        // new improvment
-        $rows = QueryBuilder::for(Blog::where('active', 1))
-            ->allowedFilters('')
-            ->defaultSort('')
-            ->allowedSorts('')
-            ->paginate(request('perPage') ?? 10);
-
-        return response()->json(BlogResource::collection($rows)->response()->getData(true), 200);
-           
-        <!--
-            $rows = BlogResource::collection(Blog::fetchData(request()->all()));
-            return response()->json(['rows' => $rows], 200);
-        -->
+        $rows = BlogResource::collection(Blog::fetchData(request()->all()));
+        return response()->json([
+            'rows'        => $rows,
+            'paginate'    => $this->paginate($rows)
+        ], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  BlogStoreRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(BlogStoreRequest $request)
     {
-        try {
-            Blog::create($request->all());
+        $row = Blog::createOrUpdate(NULL, request()->all());
+        if($row === true) {
             return response()->json(['message' => ''], 201);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Unable to create entry, ' . $e->getMessage()], 500);
+        } else {
+            return response()->json(['message' => 'Unable to create entry ' . $row], 500);
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Blog  $blog
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Blog $blog)
+    public function show($id)
     {
-        $row = new BlogResource(Blog::findOrFail($blog));
+        $row = new BlogResource(Blog::findOrFail(decrypt($id)));
         return response()->json(['row' => $row], 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  BlogUpdateRequest  $request
-     * @param  \App\Blog  $blog
-     * @return \Illuminate\Http\Response
-     */
-    public function update(BlogUpdateRequest $request, Blog $blog)
+    public function update(BlogUpdateRequest $request, $id)
     {
-        try {
-            $blog->update($request->all());
+        $row = Blog::createOrUpdate(decrypt($id), request()->all());
+        if($row === true) {
             return response()->json(['message' => ''], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Unable to update entry, ' . $e->getMessage()], 500);
+        } else {
+            return response()->json(['message' => 'Unable to update entry ' . $row], 500);
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Blog  $blog
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Blog $blog)
+    public function destroy($id)
     {
         try {
-            $blog->delete();
+            $row = Blog::query();
+
+            if(strpos($id, ',') !== false) {
+                foreach(explode(',',$id) as $sid) {
+                    $ids[] = $sid;
+                }
+                $row->whereIN('id', $ids);
+            } else {
+                $row->where('id', $id);
+            }   
+            $row->delete();
+
             return response()->json(['message' => ''], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Unable to delete entry, ' . $e->getMessage()], 500);
+            return response()->json(['message' => 'Unable to delete entry, '. $e->getMessage()], 500);
         }
     }
 }
@@ -162,13 +135,13 @@ class BlogController extends Controller
 <pre>
 namespace App;
 
-// use Stroage;
+use DB;
+use App\Models\Image;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
-// use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Blog extends Model
 {
-    // use SoftDeletes;
     protected $guarded = [];
 
     // imageable polymorphic
@@ -176,12 +149,6 @@ class Blog extends Model
         return $this->morphOne(Image::class, 'imageable');
     }
 
-    // handle attributes
-    public function setImageAttribute($value){
-        $imageName = time().'.'.$value->extension();  
-        Storage::disk('public')->put('uploads/'.$imageName, $value);
-        $this->image()->save($imageName);
-    }
 
     // fetch Data
     public static function fetchData($value='')
@@ -190,35 +157,71 @@ class Blog extends Model
         $obj = self::query();
 
           // langauges in case you use multilanguages transactions package..
-          if(isset($value['locale'])) {
+          if(isset($value['locale']) && $value['locale']) {
              app()->setLocale($value['locale']);
           }
 
           // search for multiple columns..
-          if(isset($value['search'])) {
+          if(isset($value['search']) && $value['search']) {
             $obj->where(function($q) use ($value){
                 $q->where('title', 'like','%'.$value['search'].'%');
-                $q->orWhere('body', 'like', '%'.$value['search'].'%');
                 $q->orWhere('id', $value['search']);
             });
           }
 
           // order By..
-          if(isset($value['order'])) {
-            $obj->orderBy('id', $value['order']);
+          if(isset($value['sort']) && $value['sort']) {
+            $obj->orderBy('id', $value['sort']);
           } else {
             $obj->orderBy('id', 'DESC');
           }
-
 
 
           // feel free to add any query filter as much as you want...
 
 
 
-
         $obj = $obj->paginate($value['paginate'] ?? 10);
         return $obj;
+    }
+
+    // Create or Update
+    public static function createOrUpdate($id, $value)
+    {
+        try {
+
+            // begin Transaction between tables
+            DB::beginTransaction();
+
+                // find Or New
+                $row              = (isset($id)) ? self::find($id) : new self;
+                $row->title       = $value['title'] ?? NULL;
+                $row->body        = $value['body'] ?? NULL;
+                $row->save();
+
+                // Image
+                if(isset($value['image'])) {
+                    $row->image()->delete();
+                    if($value['image']) {
+                        if(!Str::contains($value['image'], [ Imageable::contains() ])) {
+                            $image = Image::uploadImage($value['image']);
+                        } else {
+                            $image = explode('/', $value['image']);
+                            $image = end($image);
+                        }
+                        $row->image()->create([ 'url' => $image ]);
+                    }
+                }
+
+
+            DB::commit();
+            // End Commit of Transaction
+
+            return true;
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
     }
 }
 
@@ -235,21 +238,16 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class BlogResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
+
     public function toArray($request)
     {
         return [
             'id'            => $this->id,
             'encrypt_id'    => encrypt($this->id),
-            // 'image'         => ($this->image) ? $this->image->url : NULL,
+            'image'         => ($this->image) ? $this->image->url : NULL,
 
-            // 'title'      => $this->title,
-            // 'body'       => $this->body,
+            'title'         => $this->title,
+            'body'          => $this->body,
 
             'dateForHumans' => $this->created_at->diffForHumans(),
             'timestamp'     => $this->created_at
