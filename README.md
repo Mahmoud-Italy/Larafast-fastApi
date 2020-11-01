@@ -137,7 +137,7 @@ class BlogController extends Controller
 namespace App;
 
 use DB;
-use App\Models\Image;
+use App\Image;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
