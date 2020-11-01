@@ -111,7 +111,8 @@ class BlogController extends Controller
     {
         try {
             $row = Blog::query();
-
+           
+            // can work with multi select
             if(strpos($id, ',') !== false) {
                 foreach(explode(',',$id) as $sid) {
                     $ids[] = $sid;
@@ -150,18 +151,19 @@ class Blog extends Model
     }
 
 
+
     // fetch Data
     public static function fetchData($value='')
     {
         // this way will fire up speed of the query
         $obj = self::query();
 
-          // langauges in case you use multilanguages transactions package..
+          // Langauges in case you use multilanguages transactions package..
           if(isset($value['locale']) && $value['locale']) {
              app()->setLocale($value['locale']);
           }
 
-          // search for multiple columns..
+          // Search for multiple columns..
           if(isset($value['search']) && $value['search']) {
             $obj->where(function($q) use ($value){
                 $q->where('title', 'like','%'.$value['search'].'%');
@@ -169,7 +171,7 @@ class Blog extends Model
             });
           }
 
-          // order By..
+          // Order By..
           if(isset($value['sort']) && $value['sort']) {
             $obj->orderBy('id', $value['sort']);
           } else {
@@ -180,17 +182,17 @@ class Blog extends Model
           // feel free to add any query filter as much as you want...
 
 
-
         $obj = $obj->paginate($value['paginate'] ?? 10);
         return $obj;
     }
+    
 
     // Create or Update
     public static function createOrUpdate($id, $value)
     {
         try {
 
-            // begin Transaction between tables
+            // Begin Transaction
             DB::beginTransaction();
 
                 // find Or New
