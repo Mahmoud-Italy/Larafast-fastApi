@@ -15,6 +15,7 @@ class DummyClass extends Model
     // public function image() {
     //     return $this->morphOne(Image::class, 'imageable');
     // }
+    
 
     // fetch Data
     public static function fetchData($value='')
@@ -22,12 +23,12 @@ class DummyClass extends Model
         // this way will fire up speed of the query
         $obj = self::query();
 
-          // langauges in case you use multilanguages transactions package..
+          // Langauges in case you use multilanguages transactions package..
           if(isset($value['locale']) && $value['locale']) {
              app()->setLocale($value['locale']);
           }
 
-          // search for multiple columns..
+          // Search for multiple columns..
           if(isset($value['search']) && $value['search']) {
             $obj->where(function($q) use ($value){
                 $q->where('title', 'like','%'.$value['search'].'%');
@@ -35,7 +36,7 @@ class DummyClass extends Model
             });
           }
 
-          // order By..
+          // Order By..
           if(isset($value['sort']) && $value['sort']) {
             $obj->orderBy('id', $value['sort']);
           } else {
@@ -50,13 +51,14 @@ class DummyClass extends Model
         $obj = $obj->paginate($value['paginate'] ?? 10);
         return $obj;
     }
+    
 
     // Create or Update
     public static function createOrUpdate($id, $value)
     {
         try {
 
-            // begin Transaction between tables
+            // Begin Transaction
             DB::beginTransaction();
 
                 // find Or New
