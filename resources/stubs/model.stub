@@ -5,6 +5,10 @@ namespace DummyNamespace;
 use DB;
 //use App\Models\Image;
 use Illuminate\Support\Str;
+use Illuminate\Pipeline\Pipeline;
+use Larafast\Fastapi\QueryFilters\Sort;
+use Larafast\Fastapi\QueryFilters\Locale;
+use Larafast\Fastapi\QueryFilters\Search;
 use Illuminate\Database\Eloquent\Model;
 
 class DummyClass extends Model
@@ -15,7 +19,20 @@ class DummyClass extends Model
     // public function image() {
     //     return $this->morphOne(Image::class, 'imageable');
     // }
-    
+    // Filter Data
+    public static function filter()
+    {
+        return app(Pipeline::class)
+                ->send(self::query())
+                ->through(
+                [
+                    Locale::class,
+                    Search::class,
+                    Sort::class
+                ])
+                ->thenReturn()
+                ->paginate($value['paginate'] ?? 10);
+    }
 
     // fetch Data
     public static function fetchData($value='')
@@ -51,7 +68,6 @@ class DummyClass extends Model
         $obj = $obj->paginate($value['paginate'] ?? 10);
         return $obj;
     }
-    
 
     // Create or Update
     public static function createOrUpdate($id, $value)
