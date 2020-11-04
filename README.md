@@ -74,7 +74,7 @@ class BlogController extends Controller
 
     public function index()
     {
-        $rows = BlogResource::collection(Blog::fetchData(request()->all()));
+        $rows = BlogResource::collection(Blog::filter());
         return response()->json([
             'rows'        => $rows,
             'paginate'    => $this->paginate($rows)
@@ -138,6 +138,10 @@ namespace App;
 
 use DB;
 use App\Image;
+use Illuminate\Pipeline\Pipeline;
+use Larafast\Fastapi\QueryFilters\Sort;
+use Larafast\Fastapi\QueryFilters\Locale;
+use Larafast\Fastapi\QueryFilters\Search;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
@@ -149,41 +153,20 @@ class Blog extends Model
     public function image() {
         return $this->morphOne(Image::class, 'imageable');
     }
-
-
-
-    // fetch Data
-    public static function fetchData($value='')
+    
+    // Filter
+    public static function filter()
     {
-        // this way will fire up speed of the query
-        $obj = self::query();
-
-          // Langauges in case you use multilanguages transactions package..
-          if(isset($value['locale']) && $value['locale']) {
-             app()->setLocale($value['locale']);
-          }
-
-          // Search for multiple columns..
-          if(isset($value['search']) && $value['search']) {
-            $obj->where(function($q) use ($value){
-                $q->where('title', 'like','%'.$value['search'].'%');
-                $q->orWhere('id', $value['search']);
-            });
-          }
-
-          // Order By..
-          if(isset($value['sort']) && $value['sort']) {
-            $obj->orderBy('id', $value['sort']);
-          } else {
-            $obj->orderBy('id', 'DESC');
-          }
-
-
-          // feel free to add any query filter as much as you want...
-
-
-        $obj = $obj->paginate($value['paginate'] ?? 10);
-        return $obj;
+        return app(Pipeline::class)
+                ->send(self::query())
+                ->through(
+                [
+                    Locale::class,
+                    Search::class,
+                    Sort::class
+                ])
+                ->thenReturn()
+                ->paginate(request('paginate') ?? 10);
     }
     
 
