@@ -19,6 +19,8 @@ class DummyClass extends Model
     // public function image() {
     //     return $this->morphOne(Image::class, 'imageable');
     // }
+    
+    
     // Filter Data
     public static function filter()
     {
@@ -31,7 +33,7 @@ class DummyClass extends Model
                     Sort::class
                 ])
                 ->thenReturn()
-                ->paginate($value['paginate'] ?? 10);
+                ->paginate(request('paginate') ?? 10);
     }
 
     // fetch Data
