@@ -11,7 +11,7 @@ use DummyRootNamespaceHttp\Controllers\Controller;
 
 class DummyClass extends Controller
 {
-    
+
     function __construct()
     {
         // $this->middleware('permission:view_blogs', ['only' => ['index', 'show']]);
@@ -22,7 +22,7 @@ class DummyClass extends Controller
 
     public function index()
     {
-        $rows = DummyModelClassResource::collection(DummyModelClass::fetchData(request()->all()));
+        $rows = DummyModelClassResource::collection(DummyModelClass::filter());
         return response()->json(['rows' => $rows], 200);
     }
 
@@ -65,7 +65,7 @@ class DummyClass extends Controller
                 $row->whereIN('id', $ids);
             } else {
                 $row->where('id', $id);
-            }   
+            }
             $row->delete();
 
             return response()->json(['message' => ''], 200);
