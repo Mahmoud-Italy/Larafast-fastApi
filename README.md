@@ -6,7 +6,7 @@
 ![fast-api](assets/background.jpg)
 
 
-# What does mean FastAPI:
+# What does mean FastAPI: 
 A Fastapi Laravel package to help you generate CRUD API Controllers and Resources, Model.. etc
 
 # What actually do?
