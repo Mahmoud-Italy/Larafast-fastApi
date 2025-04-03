@@ -5,7 +5,7 @@
 <a href="https://packagist.org/packages/larafast/fastapi"><img src="https://poser.pugx.org/larafast/fastapi/d/total.svg" alt="Total Downloads"></a>
 ![fast-api](assets/background.jpg)
 
-
+ 
 # What does mean FastAPI: 
 A Fastapi Laravel package to help you generate CRUD API Controllers and Resources, Model.. etc
  
