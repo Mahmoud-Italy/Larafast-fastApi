@@ -14,7 +14,7 @@ Suppose you are building an api, and you want to create controller and resources
       
 So what FastAPI does is when you tell it the model name, it will do all those boring things. When it's done you have the following:
 <ul>
-    <li>Blog.php</li>
+    <li>Blog.php</li> 
     <li>BlogController.php ship with code already exists</li>
     <li>BlogStoreRequest.php and BlogUpdateRequest.php</li>
     <li>BlogResource.php</li>
